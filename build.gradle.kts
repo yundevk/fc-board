@@ -49,4 +49,5 @@ tasks.withType<Test> {
 }
 
 tasks.named<Jar>("jar") {
+    enabled = false
 }
