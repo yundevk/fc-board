@@ -26,7 +26,7 @@ class PostServiceTest(
                 PostCreateRequestDto(
                     title = "제목",
                     content = "내용",
-                    createdBy = "margo",
+                    createdBy = "margo"
                 )
             )
             then("게시글이 정상적으로 생성됨을 확인한다.") {
@@ -53,7 +53,7 @@ class PostServiceTest(
                 PostUpdateRequestDto(
                     title = "update title",
                     content = "update content",
-                    updatedBy = "margo",
+                    updatedBy = "margo"
                 )
             )
             then("게시글이 정상적으로 수정됨을 확인한다.") {
@@ -73,7 +73,7 @@ class PostServiceTest(
                         PostUpdateRequestDto(
                             title = "update title",
                             content = "update content",
-                            updatedBy = "update margo",
+                            updatedBy = "update margo"
                         )
                     )
                 }
@@ -87,7 +87,7 @@ class PostServiceTest(
                         PostUpdateRequestDto(
                             title = "update title",
                             content = "update content",
-                            updatedBy = "update margo",
+                            updatedBy = "update margo"
                         )
                     )
                 }
