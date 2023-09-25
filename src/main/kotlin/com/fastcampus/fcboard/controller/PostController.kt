@@ -6,6 +6,7 @@ import com.fastcampus.fcboard.controller.dto.PostSearchRequest
 import com.fastcampus.fcboard.controller.dto.PostSummaryResponse
 import com.fastcampus.fcboard.controller.dto.PostUpdateRequest
 import com.fastcampus.fcboard.controller.dto.toDto
+import com.fastcampus.fcboard.controller.dto.toResponse
 import com.fastcampus.fcboard.service.PostService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 
 @RestController
 class PostController(
@@ -52,13 +52,7 @@ class PostController(
     fun getPost(
         @PathVariable id: Long,
     ): PostDetailResponse {
-        return PostDetailResponse(
-            1L,
-            "title",
-            "content",
-            "createdBy",
-            LocalDateTime.now().toString()
-        )
+        return postService.getPost(id).toResponse()
     }
 
     @GetMapping("/posts")
@@ -66,8 +60,6 @@ class PostController(
         pageable: Pageable,
         postSearchRequest: PostSearchRequest,
     ): Page<PostSummaryResponse> {
-        println("title: ${postSearchRequest.title}")
-        println("createdBy: ${postSearchRequest.createdBy}")
-        return Page.empty()
+        return postService.findPageBy(pageable, postSearchRequest.toDto()).toResponse()
     }
 }
