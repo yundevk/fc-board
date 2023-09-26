@@ -25,6 +25,7 @@ import org.springframework.data.repository.findByIdOrNull
 @SpringBootTest
 class PostServiceTest(
     private val postService: PostService,
+    private val likeService: LikeService,
     private val postRepository: PostRepository,
     private val commentRepository: CommentRepository,
     private val tagRepository: TagRepository,
@@ -209,6 +210,9 @@ class PostServiceTest(
                 Tag(name = "tag3", post = saved, createdBy = "margo")
             )
         )
+        likeService.createLike(saved.id, "margo")
+        likeService.createLike(saved.id, "margo1")
+        likeService.createLike(saved.id, "margo2")
         When("정상 조회시") {
             val post = postService.getPost(saved.id)
             then("게시글 내용이 정상적으로 반환됨을 확인한다.") {
@@ -222,6 +226,9 @@ class PostServiceTest(
                 post.tags[0] shouldBe "tag1"
                 post.tags[1] shouldBe "tag2"
                 post.tags[2] shouldBe "tag3"
+            }
+            then("좋아요 개수가 조회됨을 확인한다.") {
+                post.likeCount shouldBe 3
             }
         }
         When("게시글이 없을 때") {
@@ -294,6 +301,19 @@ class PostServiceTest(
                 postPage.content[2].title shouldBe "title8"
                 postPage.content[3].title shouldBe "title7"
                 postPage.content[4].title shouldBe "title6"
+            }
+        }
+        When("좋아요가 추가되었을 때") {
+            val postPage = postService.findPageBy(PageRequest.of(0, 5), PostSearchRequestDto(tag = "tag5"))
+            postPage.content.forEach {
+                likeService.createLike(it.id, "margo1")
+                likeService.createLike(it.id, "margo2")
+            }
+            val likedPostPage = postService.findPageBy(PageRequest.of(0, 5), PostSearchRequestDto(tag = "tag5"))
+            then("좋아요 개수가 정상적으로 조회됨을 확인한다.") {
+                likedPostPage.content.forEach {
+                    it.likeCount shouldBe 2
+                }
             }
         }
     }
