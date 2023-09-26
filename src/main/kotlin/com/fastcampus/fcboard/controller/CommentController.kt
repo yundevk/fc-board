@@ -21,8 +21,6 @@ class CommentController(
         @PathVariable postId: Long,
         @RequestBody commentCreateRequest: CommentCreateRequest,
     ): Long {
-        println(commentCreateRequest.content)
-        println(commentCreateRequest.createdBy)
         return commentService.createComment(postId, commentCreateRequest.toDto())
     }
 
@@ -31,8 +29,6 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestBody commentUpdateRequest: CommentUpdateRequest,
     ): Long {
-        println(commentUpdateRequest.content)
-        println(commentUpdateRequest.updatedBy)
         return commentService.updateComment(commentId, commentUpdateRequest.toDto())
     }
 
@@ -41,7 +37,6 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestParam deletedBy: String,
     ): Long {
-        println(deletedBy)
         return commentService.deleteComment(commentId, deletedBy)
     }
 }
